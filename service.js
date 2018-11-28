@@ -1,7 +1,7 @@
 var talks = [];
-
-exports.init = function (callback) {
-    var request = require('request');
+var request = require('request');
+exports.init = function compterSessions (callback) {
+    
 
     request('http://2018.breizhcamp.org/json/talks.json', {json: true}, function (err, res, tabTalks1) {
         if (err) {
@@ -12,8 +12,18 @@ exports.init = function (callback) {
             if (err) {
                 return console.log('Erreur2', err);
             }
-            talks = talks.concat(tabTalks2)
-            callback(talks.length)
-        })
-    })
-}
+            talks = talks.concat(tabTalks2);
+            callback(talks.length);
+        });
+    });
+};
+
+exports.listerSessions = function listerSessions(callback) {
+    request('http://2018.breizhcamp.org/json/talks.json', {json: true}, function (err, res, tabTalks1) {
+        if (err) {
+            return console.log('Erreur', err);
+        }
+        talks = talks.concat(tabTalks1);
+        talks.forEach(talk=> console.log(`Conférence ${talk.venue_id} :  ${talk.name}`));        
+    });
+};
